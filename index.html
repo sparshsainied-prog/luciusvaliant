@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lucius Valiant | Fanged Panic</title>
+<meta name="description" content="Fanged Panic, a Thornhill Vampire novella, and The Thornhill Vampire Chronicles by Lucius Valiant.">
+<meta property="og:title" content="A homepage for Lucius Valiant, made by Sparsh Saini">
+<meta property="og:description" content="A homepage idea for Lucius Valiant and Fanged Panic, made by Sparsh Saini. Not his official site.">
+<meta property="og:image" content="https://sparshsainied-prog.github.io/luciusvaliant/img/og.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0b0d'/><rect x='9' y='5' width='14' height='24' fill='%23565c63'/><rect x='12' y='9' width='8' height='20' fill='%23233340'/><rect x='15.5' y='9' width='1' height='20' fill='%23b3121a'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* Colours are lifted from the Fanged Panic cover: the black of the roots, the grey of the tomb
+   stone, the cold blue of the doors and the title, the thin red line between the doors. */
+:root {
+  --black: #0a0b0d;
+  --soot: #14161a;
+  --stone: #b9bdc2;
+  --stone-2: #7d838a;
+  --door: #233340;
+  --ice: #8fd4ff;
+  --ice-2: #3e9fe6;
+  --seam: #b3121a;
+  --bone: #e4e6e8;
+  --display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --text: "EB Garamond", Garamond, Georgia, serif;
+  --gutter: clamp(1rem, 5vw, 4rem);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--black); color: var(--bone); font-family: var(--text); font-size: 1.22rem; line-height: 1.58; overflow-x: hidden; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+.wrap { max-width: 70rem; margin: 0 auto; padding: 0 var(--gutter); }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: 1.04; }
+p { margin: 0 0 1rem; }
+:focus-visible { outline: 2px solid var(--ice); outline-offset: 3px; }
+
+/* Buttons are cut like the tomb's doorframe: a stone rule, a gap, a second rule. */
+.btn { display: inline-block; padding: .72rem 1.3rem .66rem; font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: .06em; text-decoration: none; color: var(--ice); border: 1px solid var(--stone-2); box-shadow: inset 0 0 0 3px var(--black), inset 0 0 0 4px rgba(185, 189, 194, .35); background: var(--black); }
+.btn:hover, .btn:focus-visible { color: var(--bone); border-color: var(--stone); }
+.quiet { font-style: italic; text-underline-offset: .25em; text-decoration-thickness: 1px; }
+.quiet:hover, .quiet:focus-visible { color: var(--ice); }
+.buy { display: flex; flex-wrap: wrap; gap: .9rem 1.4rem; align-items: center; }
+
+/* Who made this, before anything else */
+.top { position: absolute; z-index: 20; top: 0; left: 0; right: 0; background: linear-gradient(rgba(5, 6, 7, .85), rgba(5, 6, 7, .55) 70%, rgba(5, 6, 7, 0)); }
+.made { margin: 0; padding: .45rem var(--gutter); background: #050607; color: var(--stone); font-size: .95rem; line-height: 1.35; text-align: center; }
+/* Nav: a folio in the margin, numbered the way the covers number the books. */
+.folio { position: fixed; z-index: 30; left: 1.1rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: .55rem; font-family: var(--display); }
+.folio a { display: flex; align-items: baseline; gap: .7rem; text-decoration: none; color: var(--stone-2); }
+.folio b { font-weight: 400; min-width: 1.8rem; font-size: 1.05rem; }
+.folio span { font-size: .85rem; opacity: 0; transform: translateX(-.4rem); transition: opacity .3s, transform .3s; }
+.folio a.on { color: var(--ice); }
+.folio a.on span, .folio a:hover span, .folio a:focus-visible span { opacity: 1; transform: none; }
+.folio a:hover, .folio a:focus-visible { color: var(--bone); }
+.folio .name { font-size: .8rem; letter-spacing: .06em; color: var(--stone); margin-bottom: .5rem; writing-mode: vertical-rl; transform: rotate(180deg); align-self: flex-start; }
+
+/* Hero: built from the Fanged Panic cover, cut into planes. The plate (stone and doorway),
+   the two door leaves, the title lettering and the black roots each move on their own.
+   We start at the tomb door; scrolling swings the leaves open on the red seam, then pulls back
+   out of the cover while the roots sweep past and the title rises into place, and the doors
+   seal again as the whole book settles. Transform and opacity only, one scroll handler. */
+.hero { position: relative; height: 100svh; min-height: 40rem; }
+.js .hero { height: 360svh; }
+.still .hero { height: 100svh; }
+.stage { position: sticky; top: 0; height: 100svh; min-height: 40rem; overflow: hidden; background: var(--black); }
+.rig, .roots { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+.rig { aspect-ratio: 1600 / 2560; }
+.rig > img, .roots img { position: absolute; left: 0; top: 0; width: 100%; height: auto; }
+.leaf { position: absolute; top: 21.72%; height: 28.75%; overflow: hidden; will-change: transform; }
+.leaf img { width: 100%; height: 100%; }
+.leaf::after { content: ""; position: absolute; inset: 0; background: #050607; opacity: var(--dim, 0); }
+.leaf.l { left: 38.25%; width: 12.125%; transform-origin: 0 50%; }
+.leaf.r { left: 50.375%; width: 12.375%; transform-origin: 100% 50%; }
+.rig .title { top: 48.4375%; will-change: transform, opacity; }
+.roots { pointer-events: none; }
+.beat { position: absolute; left: var(--gutter); bottom: 9svh; width: min(36rem, calc(100% - 2 * var(--gutter))); padding: 2.4rem 0 0; will-change: transform, opacity; }
+.beat::before { content: ""; position: absolute; inset: -40svh -10rem -12svh calc(-1 * var(--gutter)); background: linear-gradient(90deg, rgba(5, 6, 7, .9), rgba(5, 6, 7, .75) 55%, rgba(5, 6, 7, 0)); -webkit-mask-image: linear-gradient(transparent, #000 45%); mask-image: linear-gradient(transparent, #000 45%); z-index: -1; }
+.beat p { margin: 0; will-change: opacity; }
+.beat .when { font-family: var(--display); font-size: clamp(2.5rem, 5.6vw, 5rem); line-height: 1; color: var(--bone); text-shadow: 0 2px 18px rgba(5, 6, 7, .9); margin-bottom: .9rem; }
+.beat .what { font-size: clamp(1.25rem, 2.1vw, 1.6rem); font-style: italic; color: var(--ice); text-shadow: 0 1px 10px rgba(5, 6, 7, .95); max-width: 26rem; }
+
+.inside { position: absolute; inset: 4.5rem var(--gutter) 2.5rem; display: grid; grid-template-columns: auto minmax(0, 30rem); justify-content: center; align-items: center; gap: clamp(2rem, 5vw, 4.5rem); }
+.slot { height: min(64svh, 36rem); aspect-ratio: 1600 / 2560; }
+.copy { will-change: transform, opacity; }
+.js .copy { opacity: 0; }
+.still .copy { opacity: 1; }
+.still .beat { display: none; }
+html:not(.js) .beat, html:not(.js) .rig, html:not(.js) .roots { display: none; }
+html:not(.js) .slot { background: url(img/fanged-panic.jpg) center / cover; }
+.copy h1 { font-size: clamp(2.9rem, 5.4vw, 4.8rem); color: var(--ice); }
+.copy .tag { font-family: var(--display); font-size: clamp(1rem, 1.5vw, 1.2rem); letter-spacing: .05em; margin: .9rem 0 .4rem; color: var(--stone); }
+.copy .meta { font-style: italic; color: var(--stone); font-size: 1.12rem; margin-bottom: 1.5rem; }
+
+/* Calm sections */
+.band { padding: clamp(4.5rem, 10vw, 8rem) 0; }
+h2 { font-size: clamp(2.3rem, 4.8vw, 3.9rem); margin-bottom: 1.4rem; color: var(--bone); text-wrap: balance; }
+.panic { background: var(--soot); }
+.panic .grid { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+.panic .cover-s { box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, .7); position: sticky; top: 2rem; }
+.blurb { max-width: 38rem; }
+.blurb .open { font-family: var(--display); font-size: 1.5rem; color: var(--ice); margin-bottom: 1.2rem; }
+.blurb .last { font-style: italic; color: var(--stone); margin: 1.6rem 0 2rem; }
+.where { list-style: none; padding: 0; margin: 0; border-top: 1px solid rgba(185, 189, 194, .28); }
+.where li { border-bottom: 1px solid rgba(185, 189, 194, .28); }
+.where a, .where .plain { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1rem 0; text-decoration: none; font-weight: 600; }
+.where span { color: var(--stone); font-weight: 400; font-style: italic; text-align: right; }
+.where a:hover, .where a:focus-visible { color: var(--ice); }
+
+.chron { position: relative; background: var(--black); }
+.chron::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7rem; background: url(img/roots-band.jpg) center top / cover; opacity: .9; pointer-events: none; }
+.chron .wrap { position: relative; }
+.chron .lead-in { max-width: 38rem; font-size: clamp(1.3rem, 2.1vw, 1.55rem); line-height: 1.4; margin-bottom: 3rem; }
+.ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(185, 189, 194, .28); }
+.ledger li { display: grid; grid-template-columns: 4.4rem 5.6rem minmax(0, 1fr); gap: 1.4rem; align-items: center; padding: 1.3rem 0; border-bottom: 1px solid rgba(185, 189, 194, .28); }
+.ledger .num { font-family: var(--display); font-size: 2.2rem; color: var(--stone-2); text-align: center; }
+.ledger img { box-shadow: 0 .6rem 1.4rem rgba(0, 0, 0, .7); }
+.ledger h3 { font-size: 1.55rem; margin-bottom: .35rem; }
+.ledger h3 a { text-decoration: none; }
+.ledger h3 a:hover, .ledger h3 a:focus-visible { color: var(--ice); }
+.ledger p { margin: 0; color: var(--stone); }
+.ledger .yr { font-family: var(--display); font-size: .9rem; color: var(--stone-2); letter-spacing: .05em; }
+.free { margin-top: 2.6rem; display: flex; flex-wrap: wrap; gap: 1rem 1.6rem; align-items: center; }
+.free p { margin: 0; max-width: 30rem; }
+
+.oxford { background: var(--door); }
+.oxford .grid { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 34rem); justify-content: center; gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.crypt { position: relative; width: min(100%, 17rem); aspect-ratio: 492 / 830; box-shadow: 0 1.4rem 3rem rgba(0, 0, 0, .55); }
+.crypt > img { width: 100%; height: 100%; }
+.crypt .no { position: absolute; left: 10%; right: 10%; top: 40%; text-align: center; font-family: var(--display); font-size: clamp(2.4rem, 5vw, 3.4rem); color: var(--bone); text-shadow: 0 2px 10px rgba(0, 0, 0, .8); }
+.cleaf { position: absolute; top: 6.747%; height: 88.675%; overflow: hidden; will-change: transform; }
+.cleaf img { width: 100%; height: 100%; }
+.cleaf.l { left: 10.569%; width: 39.431%; transform-origin: 0 50%; }
+.cleaf.r { left: 50%; width: 40.244%; transform-origin: 100% 50%; }
+.oxford .lead-in { font-size: clamp(1.3rem, 2.1vw, 1.55rem); line-height: 1.4; margin-bottom: 2rem; }
+.oxford .table { font-family: var(--display); font-size: clamp(4.5rem, 12vw, 8.5rem); line-height: .9; color: var(--ice); margin: 0 0 .6rem; }
+.oxford .table small { display: block; font-size: 1.1rem; letter-spacing: .08em; color: var(--stone); margin-bottom: .6rem; }
+.oxford dl { margin: 0 0 2rem; display: grid; grid-template-columns: max-content minmax(0, 1fr); border-top: 1px solid rgba(228, 230, 232, .3); }
+.oxford dt, .oxford dd { margin: 0; padding: .75rem 0; border-bottom: 1px solid rgba(228, 230, 232, .3); }
+.oxford dt { font-family: var(--display); padding-right: 1.6rem; color: var(--stone); }
+
+.about { background: var(--soot); }
+.about .grid { display: grid; grid-template-columns: minmax(0, 18rem) minmax(0, 36rem); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.about img { box-shadow: 0 1.2rem 2.6rem rgba(0, 0, 0, .6); }
+.about .said { font-family: var(--display); font-size: 1.35rem; line-height: 1.3; color: var(--ice); margin: 1.6rem 0 .3rem; }
+.about .by { font-style: italic; color: var(--stone); }
+
+footer { padding: 2.2rem 0 2.6rem; background: #050607; color: var(--stone); font-size: 1rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: .8rem 2rem; justify-content: space-between; }
+footer p { margin: 0; }
+
+@media (max-width: 760px) {
+  body { font-size: 1.12rem; }
+  .folio { left: auto; right: .6rem; top: auto; bottom: .7rem; transform: none; flex-direction: row; align-items: center; gap: .1rem; padding: .3rem .4rem; background: rgba(5, 6, 7, .82); border: 1px solid rgba(185, 189, 194, .3); }
+  .folio .name, .folio span { display: none; }
+  .folio b { display: block; min-width: 2.2rem; padding: .35rem 0; text-align: center; font-size: .95rem; }
+  .crypt { width: 12rem; }
+  .beat { bottom: 6svh; }
+  .beat::before { inset: -6rem -1.2rem -8svh -1.2rem; background: linear-gradient(rgba(5, 6, 7, 0), rgba(5, 6, 7, .85) 35%, rgba(5, 6, 7, .92)); }
+  .inside { inset: 4.2rem 1.2rem 3.6rem; grid-template-columns: minmax(0, 1fr); justify-items: center; align-content: center; gap: 1.1rem; text-align: center; }
+  .slot { height: min(42svh, 22rem); }
+  .copy h1 { font-size: 2.5rem; }
+  .copy .tag { margin: .5rem 0 .3rem; font-size: .95rem; }
+  .copy .meta { font-size: 1.02rem; margin-bottom: 1rem; }
+  .copy .buy { justify-content: center; }
+  .panic .grid, .oxford .grid, .about .grid { grid-template-columns: minmax(0, 1fr); }
+  .panic .cover-s { position: static; max-width: 15rem; }
+  .ledger li { grid-template-columns: 2.4rem 4.2rem minmax(0, 1fr); gap: .9rem; }
+  .ledger .num { font-size: 1.5rem; }
+  .ledger h3 { font-size: 1.25rem; }
+  .ledger p { font-size: 1rem; line-height: 1.4; }
+  .about img { max-width: 13rem; }
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <p class="made">A homepage idea made by Sparsh Saini for Lucius Valiant. Not his official site.</p>
+</div>
+<nav class="folio" aria-label="Chapters">
+  <a class="name" href="#">Lucius Valiant</a>
+  <a href="#panic" data-c="panic"><b>I</b><span>Fanged Panic</span></a>
+  <a href="#chronicles" data-c="chronicles"><b>II</b><span>The Chronicles</span></a>
+  <a href="#about" data-c="about"><b>III</b><span>Lucius</span></a>
+  <a href="#oxford" data-c="oxford"><b>IV</b><span>Oxford</span></a>
+</nav>
+
+<main>
+<section class="hero" aria-label="Fanged Panic">
+  <div class="stage">
+    <div class="rig">
+      <img class="plate" src="img/plate.jpg" alt="" width="1600" height="2560" fetchpriority="high">
+      <div class="leaf l"><img src="img/door-l.jpg" alt="" width="194" height="736"></div>
+      <div class="leaf r"><img src="img/door-r.jpg" alt="" width="198" height="736"></div>
+      <img class="title" src="img/title.webp" alt="" width="1200" height="570">
+    </div>
+    <div class="roots"><img src="img/roots.webp" alt="" width="1200" height="1920"></div>
+    <div class="beat">
+      <p class="when">Highgate Cemetery, 1969.</p>
+      <p class="what">The vampire Lyrica awakens from her slumber in the Thornhill tomb.</p>
+    </div>
+    <div class="inside">
+      <div class="slot" role="img" aria-label="Fanged Panic cover: a tomb door with a red line of light between its doors, wrapped in black roots"></div>
+      <div class="copy">
+        <h1>Fanged Panic</h1>
+        <p class="tag">A Thornhill Vampire Novella</p>
+        <p class="meta">Out now in paperback, hardback, Kindle and audiobook.</p>
+        <div class="buy">
+          <a class="btn" href="https://www.amazon.co.uk/dp/B0HDPTV84Z">Get Fanged Panic</a>
+          <a class="quiet" href="#chronicles">Start with Dark Roots</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band panic" id="panic">
+  <div class="wrap grid">
+    <img class="cover-s" src="img/fanged-panic.jpg" alt="Fanged Panic: A Thornhill Vampire Novella by Lucius Valiant" width="600" height="960" loading="lazy">
+    <div class="blurb">
+      <h2>Something is stirring among the graves</h2>
+      <p class="open">Highgate Cemetery, 1969.</p>
+      <p>The vampire Lyrica awakens from her slumber in the Thornhill tomb and returns to her family’s long-abandoned mansion on top of the hill. But the world she re-enters is soon whispering of a vampire stalking the old Victorian cemetery, drawing journalists, occultists and hunters to its gates.</p>
+      <p>To divert suspicion from the real vampire hiding in plain sight, Lyrica sets a plan in motion. Summoning the spirit of her murdered uncle, Lord Algernon Thornhill, she orchestrates a haunting convincing enough to satisfy the living.</p>
+      <p>But neither the living nor the dead are easily controlled.</p>
+      <p>As the vampire panic grows and a large-scale hunt prepares to descend on Highgate, Lyrica finds herself contending with restless spirits, mysteriously appearing dead foxes, the return of an old family nemesis… and the guilt of leaving her cousin Venedict sealed inside a chain-wrapped casket beneath the mansion.</p>
+      <p class="last">A Gothic vampire novella set in the world of The Thornhill Vampire Chronicles. 132 pages, out 11 September 2026.</p>
+      <ul class="where">
+        <li><a href="https://www.amazon.co.uk/dp/B0HDPTV84Z">Amazon UK <span>Kindle, paperback, hardback, audiobook</span></a></li>
+        <li><a href="https://lucius-valiant-shop.square.site">My shop <span>buy direct</span></a></li>
+        <li><a href="https://www.goodreads.com/book/show/256697721-fanged-panic">Goodreads <span>put it on the shelf</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band chron" id="chronicles">
+  <div class="wrap">
+    <h2>The Thornhill Vampire Chronicles</h2>
+    <p class="lead-in">Eccentric Victorian vampires, deadly rivals, dark family secrets, and love that maims more than it heals. Five books so far, and it all starts at Thornhill Mansion, above Highgate Cemetery West.</p>
+    <ol class="ledger">
+      <li><span class="num">I</span><img src="img/dark-roots.jpg" alt="Dark Roots cover" width="313" height="500" loading="lazy"><div><h3><a href="https://www.amazon.co.uk/dp/B0CHGQ86JY">Dark Roots</a></h3><p>Vampire hunter Harlan Thorne steps into Thornhill Mansion, and his fate gets hopelessly tangled with the Thornhills’.</p><span class="yr">2023</span></div></li>
+      <li><span class="num">II</span><img src="img/deep-graves.jpg" alt="Deep Graves cover" width="313" height="500" loading="lazy"><div><h3><a href="https://www.amazon.co.uk/dp/B0CJ3Z46Q2">Deep Graves</a></h3><p>At 391 years old, Gabriel Graves is no ordinary undertaker.</p><span class="yr">2023</span></div></li>
+      <li><span class="num">III</span><img src="img/foul-moon.jpg" alt="Foul Moon cover" width="313" height="500" loading="lazy"><div><h3><a href="https://www.amazon.co.uk/dp/B0CJ55KSHR">Foul Moon</a></h3><p>Fangs aside, becoming a vampire doesn’t fundamentally change you… or does it?</p><span class="yr">2024</span></div></li>
+      <li><span class="num">IV</span><img src="img/grim-games.jpg" alt="Grim Games cover" width="313" height="500" loading="lazy"><div><h3><a href="https://www.amazon.co.uk/dp/B0DF531LKQ">Grim Games</a></h3><p>Harlan Thornhill still yearns for what he did before joining the ranks of the undead.</p><span class="yr">2024</span></div></li>
+      <li><span class="num">V</span><img src="img/grave-matters.jpg" alt="Grave Matters cover" width="313" height="500" loading="lazy"><div><h3><a href="https://www.amazon.co.uk/dp/B0FJMVGVQ1">Grave Matters</a></h3><p>Venice, as Carnival looms. Old promises, dangerous affections and blood-bound loyalties collide.</p><span class="yr">2025</span></div></li>
+    </ol>
+    <div class="free">
+      <a class="btn" href="https://BookHip.com/CWKDTTK">Get Dark Roots free</a>
+      <p>Join the Thornhill Dispatch, my letters from the mansion, and book one is yours.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="band about" id="about">
+  <div class="wrap grid">
+    <img src="img/lucius.jpg" alt="Lucius Valiant against a red stained glass window, rings on his fingers" width="640" height="640" loading="lazy">
+    <div>
+      <h2>Lucius Valiant</h2>
+      <p>I’m a Danish-British author. The first real book I remember reading is Bram Stoker’s Dracula, and that, as the saying goes, was that.</p>
+      <p>I love Frankenstein and The Picture of Dorian Gray, Anne Rice, Poppy Z. Brite and Stephen King, and I draw a lot from Britain’s history, folklore and legends.</p>
+      <p class="said">“Valiant really said ‘let’s make trauma beautiful’ and I ate it up.”</p>
+      <p class="by">A reader on Goodreads</p>
+      <p><a class="quiet" href="mailto:letters@authorluciusvaliant.com">letters@authorluciusvaliant.com</a> · <a class="quiet" href="https://www.instagram.com/authorluciusvaliant">Instagram</a> · <a class="quiet" href="https://www.tiktok.com/@authorluciusvaliant">TikTok</a></p>
+    </div>
+  </div>
+</section>
+<section class="band oxford" id="oxford">
+  <div class="wrap grid">
+    <div class="crypt" aria-hidden="true">
+      <img src="img/crypt.jpg" alt="" width="492" height="830" loading="lazy">
+      <span class="no">S71</span>
+      <div class="cleaf l"><img src="img/door-l.jpg" alt="" width="194" height="736" loading="lazy"></div>
+      <div class="cleaf r"><img src="img/door-r.jpg" alt="" width="198" height="736" loading="lazy"></div>
+    </div>
+    <div>
+      <h2>Find me in Oxford</h2>
+      <p class="lead-in">I’ll be at the Oxford Indie Book Fair. Come and say hello, and pick up a Thornhill book or two.</p>
+      <dl>
+        <dt>Table</dt><dd>S71</dd>
+        <dt>When</dt><dd>Sunday 22 November 2026, 11am to 4.30pm</dd>
+        <dt>Where</dt><dd>Oxford Examination Schools, OX1 4BG</dd>
+        <dt>Entry</dt><dd>Free</dd>
+      </dl>
+      <a class="btn" href="https://oxfordindiebookfair.co.uk/">About the fair</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A mockup made by Sparsh Saini for Lucius Valiant. Not affiliated, not live. The covers, art and words are the author’s.</p>
+    <p><a class="quiet" href="#">Back to top</a></p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const hero = document.querySelector('.hero'), stage = hero.querySelector('.stage');
+  const rig = hero.querySelector('.rig'), roots = hero.querySelector('.roots');
+  const leafL = rig.querySelector('.leaf.l'), leafR = rig.querySelector('.leaf.r'), title = rig.querySelector('.title');
+  const slot = hero.querySelector('.slot'), beat = hero.querySelector('.beat');
+  const when = beat.querySelector('.when'), what = beat.querySelector('.what'), copy = hero.querySelector('.copy');
+  // The red seam between the tomb doors, as a share of the cover (1600 x 2560).
+  const FX = 806 / 1600, FY = 900 / 2560, AR = 2560 / 1600;
+  const clamp = v => Math.min(1, Math.max(0, v));
+  const ease = t => t * t * (3 - 2 * t);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let G;
+  const measure = () => {
+    const s = stage.getBoundingClientRect(), r = slot.getBoundingClientRect();
+    const vw = stage.clientWidth, vh = stage.clientHeight, w = r.width, phone = vw <= 760;
+    // Phone: the doorway fills the screen, seam in the middle. Wide: the doorway fills the
+    // height on the right, with the stone and roots to the left where the words sit.
+    const S0 = phone ? Math.max(vh / (820 / 2560 * w * AR), vw / (430 / 1600 * w))
+                     : Math.max(vh / (800 / 2560 * w * AR), 1.32 * vw / w);
+    const dpr = Math.min(devicePixelRatio || 1, 3);
+    const Wb = 1600 / dpr, Wr = 1200 / dpr;
+    rig.style.width = Wb + 'px'; roots.style.width = Wr + 'px';
+    G = { L: r.left - s.left, T: r.top - s.top, w, h: w * AR, vw, vh, S0, Wb, Wr, ax: phone ? .5 : .68, ay: phone ? .4 : .5 };
+  };
+  const place = (el, W, disp, fx, fy) => {
+    el.style.transform = `translate(${(fx - FX * disp).toFixed(1)}px,${(fy - FY * disp * AR).toFixed(1)}px) scale(${(disp / W).toFixed(4)})`;
+  };
+  const render = p => {
+    const { L, T, w, h, vw, vh, S0, Wb, Wr, ax, ay } = G;
+    // 1. the doors swing in on the red seam
+    const open = ease(clamp((p - .07) / .2)), shut = ease(clamp((p - .4) / .26));
+    const d = open * (1 - shut);
+    leafL.style.transform = `scaleX(${(1 - .58 * d).toFixed(4)})`;
+    leafR.style.transform = `scaleX(${(1 - .58 * d).toFixed(4)})`;
+    leafL.style.setProperty('--dim', (d * .55).toFixed(3));
+    leafR.style.setProperty('--dim', (d * .55).toFixed(3));
+    // 2. pull back out of the cover; the roots are nearer the camera, so they sweep past faster
+    const z = ease(clamp((p - .3) / .5));
+    const sc = Math.pow(S0, 1 - z), u = (S0 - sc) / (S0 - 1);
+    const fx = vw * ax + (L + FX * w - vw * ax) * u, fy = vh * ay + (T + FY * h - vh * ay) * u;
+    place(rig, Wb, w * sc, fx, fy);
+    place(roots, Wr, w * sc * (1 + .8 * (1 - z)), fx, fy);
+    // 3. the title rises on its own plane and lands in its place on the cover
+    const t = ease(clamp((p - .36) / .26));
+    title.style.transform = `translateY(${((1 - t) * 34).toFixed(2)}%)`;
+    title.style.opacity = t.toFixed(3);
+    // words: the place and year, then Lyrica wakes as the doors open
+    const w2 = ease(clamp((p - .1) / .1)), out = ease(clamp((p - .32) / .1));
+    beat.style.opacity = (1 - out).toFixed(3);
+    what.style.opacity = w2.toFixed(3);
+    beat.style.transform = `translateY(${(-out * 3).toFixed(2)}rem)`;
+    const c = ease(clamp((p - .8) / .14));
+    copy.style.opacity = c.toFixed(3);
+    copy.style.transform = `translateY(${((1 - c) * 1.4).toFixed(2)}rem)`;
+  };
+  // Folio: mark the chapter in view.
+  const links = new Map([...document.querySelectorAll('.folio a[data-c]')].map(a => [a.dataset.c, a]));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const a = links.get(e.target.id); if (a) a.classList.toggle('on', e.isIntersecting);
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  links.forEach((a, id) => io.observe(document.getElementById(id)));
+  // The close: the tomb doors open on my table number.
+  const crypt = document.querySelector('.crypt'), cl = crypt.querySelector('.cleaf.l'), cr = crypt.querySelector('.cleaf.r');
+  const doors = q => { const k = (1 - .62 * q).toFixed(4); cl.style.transform = `scaleX(${k})`; cr.style.transform = `scaleX(${k})`; };
+  if (reduced) {
+    doors(1);
+    root.classList.add('still');
+    measure(); render(1);
+    addEventListener('resize', () => { measure(); render(1); });
+    return;
+  }
+  measure();
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const r = hero.getBoundingClientRect(), run = hero.offsetHeight - innerHeight;
+    const c = crypt.getBoundingClientRect(), vh = innerHeight;
+    render(run > 0 ? clamp(-r.top / run) : 1);
+    if (c.top < vh && c.bottom > 0) doors(ease(clamp((vh * .9 - c.top) / (vh * .5))));
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', () => { measure(); update(); });
+  update();
+})();
+</script>
+</body>
+</html>
